@@ -16,6 +16,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String name, stdID, dob, hometown;
+
+  getStudentName(name) {
+    this.name = name;
+  }
+
+  getStudentID(stdID) {
+    this.stdID = stdID;
+  }
+
+  getStudentDOB(dob) {
+    this.dob = dob;
+  }
+
+  getStudentHometown(ht) {
+    this.hometown = ht;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +54,7 @@ class _MyAppState extends State<MyApp> {
                           borderSide:
                               BorderSide(color: Colors.blue, width: 2.0))),
                   onChanged: (String name) {
-                    //getStudentName(name);
+                    getStudentName(name);
                   },
                 ),
               ),
@@ -49,8 +67,8 @@ class _MyAppState extends State<MyApp> {
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.blue, width: 2.0))),
-                  onChanged: (String name) {
-                    //getStudentName(name);
+                  onChanged: (String stdID) {
+                    getStudentName(stdID);
                   },
                 ),
               ),
@@ -63,7 +81,7 @@ class _MyAppState extends State<MyApp> {
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.blue, width: 2.0))),
-                  onChanged: (String name) {
+                  onChanged: (String dob) {
                     //getStudentName(name);
                   },
                 ),
@@ -77,11 +95,49 @@ class _MyAppState extends State<MyApp> {
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.blue, width: 2.0))),
-                  onChanged: (String name) {
-                    //getStudentName(name);
+                  onChanged: (String hometown) {
+                    getStudentName(hometown);
                   },
                 ),
-              )
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                ElevatedButton(
+                    onPressed: () {},
+                    child: Text("Create"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      onPrimary: Colors.white,
+                      shadowColor: Colors.red,
+                      elevation: 5,
+                    )),
+                ElevatedButton(
+                    onPressed: () {},
+                    child: Text("Read"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blueAccent,
+                      onPrimary: Colors.white,
+                      shadowColor: Colors.red,
+                      elevation: 5,
+                    )),
+                ElevatedButton(
+                    onPressed: () {},
+                    child: Text("Update"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.cyan,
+                      onPrimary: Colors.white,
+                      shadowColor: Colors.red,
+                      elevation: 5,
+                    )),
+                ElevatedButton(
+                    onPressed: () {},
+                    child: Text("Delete"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent,
+                      onPrimary: Colors.white,
+                      shadowColor: Colors.red,
+                      elevation: 5,
+                    ))
+              ])
             ],
           ),
         ));
