@@ -1,6 +1,6 @@
 # firebase_app
 
-implemented firebase to an Android Application built with Flutter SDK
+implemented firebase CRUD operations to an Android Application built with Flutter SDK
 
 ![appdone](https://user-images.githubusercontent.com/16855188/115420433-f3eb4c00-a21c-11eb-84db-bbb7b853dd79.JPG)
 
