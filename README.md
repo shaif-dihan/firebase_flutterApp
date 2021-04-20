@@ -1,6 +1,9 @@
 # firebase_app
 
-A new Flutter project.
+implemented firebase to an Android Application built with Flutter SDK
+
+![appdone](https://user-images.githubusercontent.com/16855188/115420433-f3eb4c00-a21c-11eb-84db-bbb7b853dd79.JPG)
+
 
 ## Getting Started
 
