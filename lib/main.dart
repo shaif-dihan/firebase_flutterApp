@@ -63,10 +63,10 @@ class _MyAppState extends State<MyApp> {
         FirebaseFirestore.instance.collection("Students").doc(studentName);
 
     documentReference.get().then((datasnapshot) {
-      // print(datasnapshot.data(["studentName"]);
-      // print(datasnapshot.data["studentID"];
-      // print(datasnapshot.data["dob"];
-      // print(datasnapshot.data["hometown"];
+      print(datasnapshot.data()["studentName"]);
+      print(datasnapshot.data()["studentID"]);
+      print(datasnapshot.data()["dob"]);
+      print(datasnapshot.data()["hometown"]);
     });
   }
 
@@ -187,41 +187,43 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                ElevatedButton(
-                    onPressed: () {
-                      createData();
-                    },
-                    child: Text("Create"),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      onPrimary: Colors.white,
-                      shadowColor: Colors.red,
-                      elevation: 5,
-                    )),
-                ElevatedButton(
-                    onPressed: () {
-                      readData();
-                    },
-                    child: Text("Read"),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blueAccent,
-                      onPrimary: Colors.white,
-                      shadowColor: Colors.red,
-                      elevation: 5,
-                    )),
-                ElevatedButton(
-                    onPressed: () {
-                      updateData();
-                    },
-                    child: Text("Update"),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.cyan,
-                      onPrimary: Colors.white,
-                      shadowColor: Colors.red,
-                      elevation: 5,
-                    )),
-                ElevatedButton(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ElevatedButton(
+                      onPressed: () {
+                        createData();
+                      },
+                      child: Text("Create"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        onPrimary: Colors.white,
+                        shadowColor: Colors.red,
+                        elevation: 5,
+                      )),
+                  ElevatedButton(
+                      onPressed: () {
+                        readData();
+                      },
+                      child: Text("Read"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blueAccent,
+                        onPrimary: Colors.white,
+                        shadowColor: Colors.red,
+                        elevation: 5,
+                      )),
+                  ElevatedButton(
+                      onPressed: () {
+                        updateData();
+                      },
+                      child: Text("Update"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.cyan,
+                        onPrimary: Colors.white,
+                        shadowColor: Colors.red,
+                        elevation: 5,
+                      )),
+                  ElevatedButton(
                     onPressed: () {
                       deleteData();
                     },
@@ -231,8 +233,54 @@ class _MyAppState extends State<MyApp> {
                       onPrimary: Colors.white,
                       shadowColor: Colors.red,
                       elevation: 5,
-                    ))
-              ])
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  textDirection: TextDirection.ltr,
+                  children: [
+                    Expanded(child: Text("Name")),
+                    Expanded(child: Text("Student_ID")),
+                    Expanded(child: Text("Date of Birth")),
+                    Expanded(child: Text("Hometown")),
+                  ],
+                ),
+              ),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("Students")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.docs.length,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot documentSnapshot =
+                              snapshot.data.docs[index];
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: Text(documentSnapshot["studentName"]),
+                              ),
+                              Expanded(
+                                child: Text(documentSnapshot["studentID"]),
+                              ),
+                              Expanded(
+                                child: Text(documentSnapshot["dob"]),
+                              ),
+                              Expanded(
+                                child: Text(documentSnapshot["hometown"]),
+                              ),
+                            ],
+                          );
+                        });
+                  }
+                },
+              )
             ],
           ),
         ));
