@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(MaterialApp(
     theme: ThemeData(
         brightness: Brightness.light,
@@ -16,14 +21,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String name, stdID, dob, hometown;
+  String studentName, studentID, dob, hometown;
 
   getStudentName(name) {
-    this.name = name;
+    this.studentName = name;
   }
 
   getStudentID(stdID) {
-    this.stdID = stdID;
+    this.studentID = stdID;
   }
 
   getStudentDOB(dob) {
@@ -33,6 +38,65 @@ class _MyAppState extends State<MyApp> {
   getStudentHometown(ht) {
     this.hometown = ht;
   }
+
+  createData() {
+    print("createData() entered!");
+
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("Students").doc(studentName);
+
+    Map<String, dynamic> students = {
+      "studentName": studentName,
+      "studentID": studentID,
+      "dob": dob,
+      "hometown": hometown
+    };
+    documentReference.set(students).whenComplete(() {
+      print("$studentName Created");
+    });
+  }
+
+  readData() {
+    print("Pressed Read!");
+
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("Students").doc(studentName);
+
+    documentReference.get().then((datasnapshot) {
+      // print(datasnapshot.data(["studentName"]);
+      // print(datasnapshot.data["studentID"];
+      // print(datasnapshot.data["dob"];
+      // print(datasnapshot.data["hometown"];
+    });
+  }
+
+  updateData() {
+    //print("Pressed Update");
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("Students").doc(studentName);
+
+    Map<String, dynamic> students = {
+      "studentName": studentName,
+      "studentID": studentID,
+      "dob": dob,
+      "hometown": hometown
+    };
+    documentReference.set(students).whenComplete(() {
+      print("$studentName Updated");
+    });
+  }
+
+  deleteData() {
+    //print("Pressed Delete");
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("Students").doc(studentName);
+
+    documentReference.delete().whenComplete(() {
+      print("$studentName deleted");
+    });
+  }
+
+  //TextEditingController dateCtl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +132,7 @@ class _MyAppState extends State<MyApp> {
                           borderSide:
                               BorderSide(color: Colors.blue, width: 2.0))),
                   onChanged: (String stdID) {
-                    getStudentName(stdID);
+                    getStudentID(stdID);
                   },
                 ),
               ),
@@ -76,15 +140,38 @@ class _MyAppState extends State<MyApp> {
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: "DOB",
+                      labelText: "Date of Birth",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.blue, width: 2.0))),
                   onChanged: (String dob) {
-                    //getStudentName(name);
+                    getStudentDOB(dob);
                   },
                 ),
+                //
+                // child: TextFormField(
+                //   controller: dateCtl,
+                //   decoration: InputDecoration(
+                //     labelText: "Date of birth",
+                //     hintText: "Ex. Insert your dob",
+                //   ),
+                //   onTap: () async {
+                //     DateTime date = DateTime(1900);
+                //     FocusScope.of(context).requestFocus(new FocusNode());
+
+                //     date = await showDatePicker(
+                //         context: context,
+                //         initialDate: DateTime.now(),
+                //         firstDate: DateTime(1900),
+                //         lastDate: DateTime(2100));
+
+                //     dateCtl.text = date.toIso8601String();
+                //   },
+                //   onChanged: (String dob) {
+                //     getStudentDOB(dateCtl.text);
+                //   },
+                // ),
               ),
               Padding(
                 padding: EdgeInsets.all(8.0),
@@ -96,13 +183,15 @@ class _MyAppState extends State<MyApp> {
                           borderSide:
                               BorderSide(color: Colors.blue, width: 2.0))),
                   onChanged: (String hometown) {
-                    getStudentName(hometown);
+                    getStudentHometown(hometown);
                   },
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      createData();
+                    },
                     child: Text("Create"),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue,
@@ -111,7 +200,9 @@ class _MyAppState extends State<MyApp> {
                       elevation: 5,
                     )),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      readData();
+                    },
                     child: Text("Read"),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blueAccent,
@@ -120,7 +211,9 @@ class _MyAppState extends State<MyApp> {
                       elevation: 5,
                     )),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      updateData();
+                    },
                     child: Text("Update"),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.cyan,
@@ -129,7 +222,9 @@ class _MyAppState extends State<MyApp> {
                       elevation: 5,
                     )),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      deleteData();
+                    },
                     child: Text("Delete"),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.redAccent,
